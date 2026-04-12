@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 5, "column": 0}, "map": {"version":3,"sources":["file:///F:/WebDev/Udemy/35-building-vibe-code-editor/app/%28auth%29/auth/layout.tsx"],"sourcesContent":["import React from \"react\";\n\n\n\nconst AuthLayout = ({children}:{children:React.ReactNode})=>{\n    return(\n        <main className=\"flex justify-center items-center h-screen flex-col bg-zinc-900\">\n        {children}\n        </main>\n    )\n}\n\nexport default AuthLayout"],"names":[],"mappings":";;;;;AAIA,MAAM,aAAa,CAAC,EAAC,QAAQ,EAA4B;IACrD,qBACI,8OAAC;QAAK,WAAU;kBACf;;;;;;AAGT;uCAEe","debugId":null}}]
-}

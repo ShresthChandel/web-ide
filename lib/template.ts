@@ -1,6 +1,6 @@
 export const templatePaths = {
   REACT: "/the-editor-starters/react-ts",
-  NEXTJS: "/the-editor-starters/nextjs-new",
+  NEXTJS: "/the-editor-starters/nextjs",
   EXPRESS: "/the-editor-starters/express-simple",
   VUE: "/the-editor-starters/vue",
   HONO: "/the-editor-starters/hono-nodejs-starter",

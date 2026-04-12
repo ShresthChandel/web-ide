@@ -53,12 +53,14 @@ const WebContainerPreview = ({
       const packageJson = JSON.parse(packageJsonRaw);
       const scripts = packageJson?.scripts ?? {};
 
-      if (scripts.dev) {
-        return { command: "npm", args: ["run", "dev"], label: "dev" };
-      }
-
-      if (scripts.start) {
-        return { command: "npm", args: ["run", "start"], label: "start" };
+      for (const scriptName of ["dev", "start", "serve", "preview"]) {
+        if (scripts[scriptName]) {
+          return {
+            command: "npm",
+            args: ["run", scriptName],
+            label: scriptName,
+          };
+        }
       }
     } catch (error) {
       console.warn("Unable to resolve start command from package.json:", error);

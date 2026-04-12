@@ -15,6 +15,8 @@
 
 # next.js
 /.next/
+/.next-build-codex/
+/.next-codex/
 /out/
 
 # production
@@ -25,6 +27,8 @@
 *.pem
 
 # debug
+.codex-dev-*.err.log
+.codex-dev-*.out.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
