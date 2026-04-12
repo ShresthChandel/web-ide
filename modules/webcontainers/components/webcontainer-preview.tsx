@@ -43,6 +43,30 @@ const WebContainerPreview = ({
 
   const terminalRef = useRef<any>(null);
 
+  const resolveStartCommand = async () => {
+    if (!instance) {
+      return { command: "npm", args: ["run", "start"], label: "start" };
+    }
+
+    try {
+      const packageJsonRaw = await instance.fs.readFile("package.json", "utf8");
+      const packageJson = JSON.parse(packageJsonRaw);
+      const scripts = packageJson?.scripts ?? {};
+
+      if (scripts.dev) {
+        return { command: "npm", args: ["run", "dev"], label: "dev" };
+      }
+
+      if (scripts.start) {
+        return { command: "npm", args: ["run", "start"], label: "start" };
+      }
+    } catch (error) {
+      console.warn("Unable to resolve start command from package.json:", error);
+    }
+
+    return { command: "npm", args: ["run", "start"], label: "start" };
+  };
+
   // Reset setup state when forceResetup changes
   useEffect(() => {
     if (forceResetup) {
@@ -192,7 +216,18 @@ const WebContainerPreview = ({
           );
         }
 
-        const startProcess = await instance.spawn("npm", ["run", "start"]);
+        const startCommand = await resolveStartCommand();
+
+        if (terminalRef.current?.writeToTerminal) {
+          terminalRef.current.writeToTerminal(
+            `Running npm ${startCommand.label}\r\n`
+          );
+        }
+
+        const startProcess = await instance.spawn(
+          startCommand.command,
+          startCommand.args
+        );
 
         instance.on("server-ready", (port: number, url: string) => {
           if (terminalRef.current?.writeToTerminal) {

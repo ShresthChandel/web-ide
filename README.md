@@ -1,8 +1,8 @@
-# 🧠 Vibecode Editor – AI-Powered Web IDE
+# 🧠 The Editor – AI-Powered Web IDE
 
-![Vibecode Editor Thumbnail](public/vibe-code-editor-thumbnaail.svg)
+![The Editor Thumbnail](public/the-editor-thumbnail.svg)
 
-**Vibecode Editor** is a blazing-fast, AI-integrated web IDE built entirely in the browser using **Next.js App Router**, **WebContainers**, **Monaco Editor**, and **local LLMs via Ollama**. It offers real-time code execution, an AI-powered chat assistant, and support for multiple tech stacks — all wrapped in a stunning developer-first UI.
+**The Editor** is a blazing-fast, AI-integrated web IDE built entirely in the browser using **Next.js App Router**, **WebContainers**, **Monaco Editor**, and **local LLMs via Ollama**. It offers real-time code execution, an AI-powered chat assistant, and support for multiple tech stacks — all wrapped in a stunning developer-first UI.
 
 ---
 
@@ -42,8 +42,8 @@
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/your-username/vibecode-editor.git
-cd vibecode-editor
+git clone https://github.com/ShresthChandel/web-ide.git
+cd web-ide
 ````
 
 ### 2. Install Dependencies

@@ -7,7 +7,9 @@ import { getPlaygroundById, SaveUpdatedCode } from "../actions";
 interface PlaygroundData {
   id: string;
   title?: string;
-  [key: string]: any;
+  templateFiles?: Array<{
+    content?: unknown;
+  }>;
 }
 
 interface UsePlaygroundReturn {
@@ -16,7 +18,7 @@ interface UsePlaygroundReturn {
   isLoading: boolean;
   error: string | null;
   loadPlayground: () => Promise<void>;
-  saveTemplateData: (data: TemplateFolder) => Promise<void>;
+  saveTemplateData: (data: TemplateFolder) => Promise<TemplateFolder>;
 }
 
 export const usePlayground = (id: string): UsePlaygroundReturn => {
@@ -36,8 +38,7 @@ export const usePlayground = (id: string): UsePlaygroundReturn => {
 
       const data = await getPlaygroundById(id);
 
-      //   @ts-ignore
-      setPlaygroundData(data);
+      setPlaygroundData(data as PlaygroundData | null);
       const rawContent = data?.templateFiles?.[0]?.content;
 
       if (typeof rawContent === "string") {
@@ -80,22 +81,23 @@ export const usePlayground = (id: string): UsePlaygroundReturn => {
 
 
 
-  const saveTemplateData = useCallback(async(data:TemplateFolder)=>{
+  const saveTemplateData = useCallback(async (data: TemplateFolder) => {
     try {
-          await SaveUpdatedCode(id, data);
+      await SaveUpdatedCode(id, data);
       setTemplateData(data);
       toast.success("Changes saved successfully");
+      return data;
     } catch (error) {
-         console.error("Error saving template data:", error);
+      console.error("Error saving template data:", error);
       toast.error("Failed to save changes");
       throw error;
     }
-  },[id])
+  }, [id]);
 
 
-  useEffect(()=>{
-    loadPlayground()
-  },[loadPlayground])
+  useEffect(() => {
+    loadPlayground();
+  }, [loadPlayground]);
 
     return {
     playgroundData,

@@ -3,6 +3,7 @@ import {
   saveTemplateStructureToJson,
 } from "@/modules/playground/lib/path-to-json";
 import { db } from "@/lib/db";
+import { getFallbackTemplate } from "@/lib/fallback-templates";
 import { templatePaths } from "@/lib/template";
 import path from "path";
 import fs from "fs/promises";
@@ -16,6 +17,19 @@ function validateJsonStructure(data: unknown): boolean {
     console.error("Invalid JSON structure:", error);
     return false;
   }
+}
+
+async function persistTemplate(id: string, template: unknown) {
+  await db.templateFile.upsert({
+    where: { playgroundId: id },
+    update: {
+      content: JSON.stringify(template),
+    },
+    create: {
+      playgroundId: id,
+      content: JSON.stringify(template),
+    },
+  });
 }
 
 export async function GET(
@@ -48,6 +62,26 @@ const playground = await db.playground.findUnique({
     const inputPath = path.join(process.cwd() , templatePath);
     const outputFile = path.join(process.cwd() , `output/${templateKey}.json`);
 
+    try {
+      await fs.access(inputPath);
+    } catch {
+      const fallbackTemplate = getFallbackTemplate(templateKey);
+
+      if (!fallbackTemplate) {
+        return Response.json(
+          { error: "Starter template is missing and no fallback is available" },
+          { status: 500 }
+        );
+      }
+
+      await persistTemplate(id, fallbackTemplate);
+
+      return Response.json(
+        { success: true, templateJson: fallbackTemplate },
+        { status: 200 }
+      );
+    }
+
     await saveTemplateStructureToJson(inputPath , outputFile);
     const result = await readTemplateStructureFromJson(outputFile);
 
@@ -57,6 +91,7 @@ const playground = await db.playground.findUnique({
       return Response.json({ error: "Invalid JSON structure" }, { status: 500 });
     }
 
+    await persistTemplate(id, result);
     await fs.unlink(outputFile)
 
 

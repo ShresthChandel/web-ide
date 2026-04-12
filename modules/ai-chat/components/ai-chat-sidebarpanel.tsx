@@ -47,7 +47,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import "katex/dist/katex.min.css";
 import Image from "next/image";
-import Stream from "stream";
 
 interface ChatMessage {
     role: "user" | "assistant";
@@ -153,8 +152,7 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
         }
     };
 
-   const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
     const messageType =
@@ -240,6 +238,11 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
     } finally {
       setIsLoading(false);
     }
+  };
+
+   const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await sendMessage();
   };
 
     const exportChat = () => {
@@ -354,7 +357,9 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
                         {/* Enhanced Controls */}
                         <Tabs
                             value={chatMode}
-                            onValueChange={(value) => setChatMode(value as any)}
+                            onValueChange={(value) =>
+                                setChatMode(value as "chat" | "review" | "fix" | "optimize")
+                            }
                             className="px-6"
                         >
                             <div className="flex items-center justify-between mb-4">
@@ -512,8 +517,8 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
                                                     remarkPlugins={[remarkGfm, remarkMath]}
                                                     rehypePlugins={[rehypeKatex]}
                                                     components={{
-                                                        code: ({ children, className, inline }) => {
-                                                            if (inline) {
+                                                        code: ({ children, className }) => {
+                                                            if (!className) {
                                                                 return (
                                                                     <code className="bg-zinc-800 px-1 py-0.5 rounded text-sm">
                                                                         {children}
@@ -618,7 +623,8 @@ export const AIChatSidePanel: React.FC<AIChatSidePanelProps> = ({
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-                                            handleSendMessage(e as any);
+                                            e.preventDefault();
+                                            void sendMessage();
                                         }
                                     }}
                                     disabled={isLoading}

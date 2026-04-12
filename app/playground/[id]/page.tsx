@@ -37,7 +37,6 @@ import WebContainerPreview from "@/modules/webcontainers/components/webcontainer
 import { useWebContainer } from "@/modules/webcontainers/hooks/useWebContainer";
 import {
   AlertCircle,
-  Bot,
   FileText,
   FolderOpen,
   Save,
@@ -48,11 +47,32 @@ import { useParams } from "next/navigation";
 import React, {
   useCallback,
   useEffect,
-  useReducer,
   useRef,
   useState,
 } from "react";
 import { toast } from "sonner";
+
+type TemplateNode = TemplateFile | TemplateFolder;
+
+function updateTemplateItems(
+  items: TemplateNode[],
+  fileToSave: TemplateFile
+): TemplateNode[] {
+  return items.map((item) => {
+    if ("folderName" in item) {
+      return { ...item, items: updateTemplateItems(item.items, fileToSave) };
+    }
+
+    if (
+      item.filename === fileToSave.filename &&
+      item.fileExtension === fileToSave.fileExtension
+    ) {
+      return { ...item, content: fileToSave.content };
+    }
+
+    return item;
+  });
+}
 
 const MainPlaygroundPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -89,7 +109,6 @@ const MainPlaygroundPage = () => {
     error: containerError,
     instance,
     writeFileSync,
-    // @ts-ignore
   } = useWebContainer({ templateData });
 
   const lastSyncedContent = useRef<Map<string, string>>(new Map());
@@ -201,22 +220,9 @@ const MainPlaygroundPage = () => {
           JSON.stringify(latestTemplateData)
         );
 
-        // @ts-ignore
-          const updateFileContent = (items: any[]) =>
-            // @ts-ignore
-          items.map((item) => {
-            if ("folderName" in item) {
-              return { ...item, items: updateFileContent(item.items) };
-            } else if (
-              item.filename === fileToSave.filename &&
-              item.fileExtension === fileToSave.fileExtension
-            ) {
-              return { ...item, content: fileToSave.content };
-            }
-            return item;
-          });
-        updatedTemplateData.items = updateFileContent(
-          updatedTemplateData.items
+        updatedTemplateData.items = updateTemplateItems(
+          updatedTemplateData.items,
+          fileToSave
         );
 
           // Sync with WebContainer
@@ -276,7 +282,7 @@ const MainPlaygroundPage = () => {
     try {
       await Promise.all(unsavedFiles.map((f) => handleSave(f.id)));
       toast.success(`Saved ${unsavedFiles.length} file(s)`);
-    } catch (error) {
+    } catch {
       toast.error("Failed to save some files");
     }
   };
@@ -503,7 +509,9 @@ const MainPlaygroundPage = () => {
                         suggestion={aiSuggestions.suggestion}
                         suggestionLoading={aiSuggestions.isLoading}
                         suggestionPosition={aiSuggestions.position}
-                        onAcceptSuggestion={(editor , monaco)=>aiSuggestions.acceptSuggestion(editor , monaco)}
+                        onAcceptSuggestion={(editor, monaco) =>
+                          aiSuggestions.acceptSuggestion(editor, monaco)
+                        }
 
                           onRejectSuggestion={(editor) =>
                           aiSuggestions.rejectSuggestion(editor)
