@@ -17,10 +17,9 @@ export default function Home() {
      
 
       <p className="mt-2 text-lg text-center text-gray-600 dark:text-gray-400 px-5 py-10 max-w-2xl">
-        The Editor is a powerful and intelligent code editor that enhances
-        your coding experience with advanced features and seamless integration.
-        It is designed to help you write, debug, and optimize your code
-        efficiently.
+        CodeCanvas Studio is your personal AI-powered coding workspace for
+        building, previewing, and iterating on projects in the browser with a
+        modern editor, starter templates, and live runtime tooling.
       </p>
       <Link href={"/dashboard"}>
         <Button variant={"brand"} className="mb-4" size={"lg"}>

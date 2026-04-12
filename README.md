@@ -1,66 +1,60 @@
-# 🧠 The Editor – AI-Powered Web IDE
+# CodeCanvas Studio
 
-![The Editor Thumbnail](public/the-editor-thumbnail.svg)
+![CodeCanvas Studio Thumbnail](public/the-editor-thumbnail.svg)
 
-**The Editor** is a blazing-fast, AI-integrated web IDE built entirely in the browser using **Next.js App Router**, **WebContainers**, **Monaco Editor**, and **local LLMs via Ollama**. It offers real-time code execution, an AI-powered chat assistant, and support for multiple tech stacks — all wrapped in a stunning developer-first UI.
-
----
-
-## 🚀 Features
-
-- 🔐 **OAuth Login with NextAuth** – Supports Google & GitHub login.
-- 🎨 **Modern UI** – Built with TailwindCSS & ShadCN UI.
-- 🌗 **Dark/Light Mode** – Seamlessly toggle between themes.
-- 🧱 **Project Templates** – Choose from React, Next.js, Express, Hono, Vue, or Angular.
-- 🗂️ **Custom File Explorer** – Create, rename, delete, and manage files/folders easily.
-- 🖊️ **Enhanced Monaco Editor** – Syntax highlighting, formatting, keybindings, and AI autocomplete.
-- 💡 **AI Suggestions with Ollama** – Local models give you code completion on `Ctrl + Space` or double `Enter`. Accept with `Tab`.
-- ⚙️ **WebContainers Integration** – Instantly run frontend/backend apps right in the browser.
-- 💻 **Terminal with xterm.js** – Fully interactive embedded terminal experience.
-- 🤖 **AI Chat Assistant** – Share files with the AI and get help, refactors, or explanations.
+**CodeCanvas Studio** is a blazing-fast, AI-integrated web IDE built entirely in the browser using **Next.js App Router**, **WebContainers**, **Monaco Editor**, and **local LLMs via Ollama**. It offers real-time code execution, an AI-powered chat assistant, and support for multiple tech stacks all wrapped in a polished developer-first UI.
 
 ---
 
-## 🧱 Tech Stack
+## Features
 
-| Layer         | Technology                                   |
-|---------------|----------------------------------------------|
-| Framework     | Next.js 15 (App Router)                      |
-| Styling       | TailwindCSS, ShadCN UI                       |
-| Language      | TypeScript                                   |
-| Auth          | NextAuth (Google + GitHub OAuth)             |
-| Editor        | Monaco Editor                                |
-| AI Suggestion | Ollama (LLMs running locally via Docker)     |
-| Runtime       | WebContainers                                |
-| Terminal      | xterm.js                                     |
-| Database      | MongoDB (via DATABASE_URL)                   |
+- OAuth login with Google and GitHub
+- Modern UI built with Tailwind CSS and shadcn/ui
+- Dark and light mode support
+- Starter-based playgrounds for React, Next.js, Express, Hono, Vue, and Angular
+- Custom file explorer for creating, renaming, and deleting files and folders
+- Monaco editor with formatting, syntax highlighting, and AI suggestions
+- WebContainer preview and embedded terminal
+- AI chat assistant powered by Ollama
 
 ---
 
-## 🛠️ Getting Started
+## Tech Stack
 
-### 1. Clone the Repo
+| Layer | Technology |
+|-------|------------|
+| Framework | Next.js 15 App Router |
+| Styling | Tailwind CSS, shadcn/ui |
+| Language | TypeScript |
+| Auth | Auth.js / NextAuth |
+| Editor | Monaco Editor |
+| AI | Ollama |
+| Runtime | WebContainers |
+| Terminal | xterm.js |
+| Database | MongoDB via Prisma |
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/ShresthChandel/web-ide.git
-cd web-ide
-````
+git clone <your-repository-url>
+cd <your-project-folder>
+```
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Set Up Environment Variables
-
-Create a `.env.local` file using the template:
+### 3. Set up environment variables
 
 ```bash
 cp .env.example .env.local
 ```
-
-Then, fill in your credentials:
 
 ```env
 AUTH_SECRET=your_auth_secret
@@ -69,54 +63,33 @@ AUTH_GOOGLE_SECRET=your_google_secret
 AUTH_GITHUB_ID=your_github_client_id
 AUTH_GITHUB_SECRET=your_github_secret
 DATABASE_URL=your_mongodb_connection_string
-NEXTAUTH_URL=http://localhost:3000
 ```
 
-### 4. Start Local Ollama Model
-
-Make sure [Ollama](https://ollama.com/) and Docker are installed, then run:
+### 4. Start Ollama
 
 ```bash
 ollama run codellama
 ```
 
-Or use your preferred model that supports code generation.
-
-### 5. Run the Development Server
+### 5. Run the app
 
 ```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` in your browser.
-
-
----
-
-## 🎯 Keyboard Shortcuts
-
-* `Ctrl + Space` or `Double Enter`: Trigger AI suggestions
-* `Tab`: Accept AI suggestion
-* `/`: Open Command Palette (if implemented)
+Visit `http://localhost:3000`.
 
 ---
 
+## Keyboard Shortcuts
 
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
+- `Ctrl + Space` triggers AI suggestions
+- `Tab` accepts the current suggestion
 
 ---
 
-## 🙏 Acknowledgements
+## Notes
 
-* [Monaco Editor](https://microsoft.github.io/monaco-editor/)
-* [Ollama](https://ollama.com/) – for offline LLMs
-* [WebContainers](https://webcontainers.io/)
-* [xterm.js](https://xtermjs.org/)
-* [NextAuth.js](https://next-auth.js.org/)
-
-```
+- Playground templates are loaded from `the-editor-starters/`
+- AI chat and code completion expect Ollama on port `11434`
+- MongoDB and OAuth credentials are required for the full app experience

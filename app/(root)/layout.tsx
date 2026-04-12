@@ -5,8 +5,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: {
-    template: "The Editor",
-    default: "Code Environment - The Editor",
+    template: "%s | CodeCanvas Studio",
+    default: "CodeCanvas Studio",
   },
 };
 export default function HomeLayout({
