@@ -142,11 +142,12 @@ Generate suggestion:`;
 
 async function generateSuggestion(prompt: string): Promise<string> {
   try {
-    const response = await fetch("http://localhost:11434/api/generate", {
+    const aiServiceUrl = process.env.AI_SERVICE_URL || "http://localhost:11434/api/generate";
+    const response = await fetch(aiServiceUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "codellama:latest",
+        model: process.env.AI_MODEL || "codellama:latest",
         prompt,
         stream: false,
         option: {
